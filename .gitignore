@@ -1,6 +1,6 @@
 *-debug.log
 *-error.log
-/lib
+# /lib
 node_modules
 .DS_Store
 .yarn/*
