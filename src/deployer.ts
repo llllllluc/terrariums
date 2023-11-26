@@ -17,6 +17,8 @@ import { Config } from "./config.js";
 import { Refs } from "./refs.js";
 import { waitForInclusionInBlock } from "./utils.js";
 
+const OPTIMIZER_VERSION = "0.15.0";
+
 export type DeployerOptions = {
   network: string;
   config: Config;
@@ -66,7 +68,7 @@ export class Deployer {
     if (this.config.workspace_optimizer) {
       const image = `cosmwasm/workspace-optimizer${
         arm64 ? "-arm64" : ""
-      }:0.12.6`;
+      }:${OPTIMIZER_VERSION}`;
       const dir = platform() === "win32" ? "%cd%" : "$(pwd)";
       execSync(
         `docker run --rm -v "${dir}":/code \
@@ -101,7 +103,9 @@ export class Deployer {
       const optimizeCmd = eval(`\`${optimize}\``);
       execSync(optimizeCmd, { stdio: log ? "inherit" : "ignore" });
     } else {
-      const image = `cosmwasm/rust-optimizer${arm64 ? "-arm64" : ""}:0.12.6`;
+      const image = `cosmwasm/rust-optimizer${
+        arm64 ? "-arm64" : ""
+      }:${OPTIMIZER_VERSION}`;
       const dir = platform() === "win32" ? "%cd%" : "$(pwd)";
       execSync(
         `docker run --rm -v "${dir}":/code \
